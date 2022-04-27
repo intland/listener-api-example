@@ -2,6 +2,5 @@
 /.gradle
 /bin
 /build
-/codebeamer-sdk
 .classpath
 .project
