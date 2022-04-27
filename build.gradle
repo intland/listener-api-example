@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+}
+
+group 'com.intland.codebeamer.event'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    compileOnly group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.1'
+    compileOnly(fileTree("codebeamer-sdk").filter { it.isFile() })
+    
+}
