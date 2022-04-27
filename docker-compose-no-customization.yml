@@ -1,0 +1,43 @@
+version: '2.1'
+
+services:
+  codebeamer-db:
+    image: intland/postgres:debian-12.6.4
+    environment:
+      - POSTGRESQL_USER=user
+      - POSTGRESQL_PASSWORD=pass
+      - POSTGRESQL_DATABASE=codebeamer
+      - TZ=UTC
+    volumes:
+      - codebeamer-db-data:/var/lib/postgresql/data
+    networks:
+      - cb
+
+  codebeamer-app:
+    image: intland/codebeamer:21.09-SP8
+    ports:
+      - 8080:8080
+    environment:
+      - DEBUG=false
+      - TZ=Europe/Berlin
+      - WAIT_HOSTS=codebeamer-db:5432
+      - WAIT_HOSTS_TIMEOUT=120
+      - "CB_database_JDBC_Username=user"
+      - "CB_database_JDBC_Password=pass"
+      - "CB_database_JDBC_Driver=org.postgresql.Driver"
+      - "CB_database_JDBC_ConnectionURL=jdbc:postgresql://codebeamer-db:5432/codebeamer"
+    volumes:
+      - codebeamer-app-repository-docs:/home/appuser/codebeamer/repository/docs
+      - codebeamer-app-repository-search:/home/appuser/codebeamer/repository/search
+      - codebeamer-app-logs:/home/appuser/codebeamer/logs
+    networks:
+      - cb
+
+networks:
+  cb:
+
+volumes:
+  codebeamer-db-data:
+  codebeamer-app-repository-docs:
+  codebeamer-app-repository-search:
+  codebeamer-app-logs:
